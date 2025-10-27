@@ -41,6 +41,14 @@ namespace pyrLunaBarLaMilanga
             dgvVentas.RowHeadersWidth = 100;
             btnMozoDelDia.Enabled = false;
             btnTotales.Enabled = false;
+            //inicializar la grilla con ceros
+            for (int i = 0; i < dgvVentas.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgvVentas.Columns.Count; j++)
+                {
+                    dgvVentas.Rows[i].Cells[j].Value = "0";
+                }
+            }
         }
         private void btnValidar_Click(object sender, EventArgs e)
         {
@@ -62,7 +70,7 @@ namespace pyrLunaBarLaMilanga
                     {
                         datosValidos = false;
                         break;
-                    }
+                    }//esto ya no sirve porque no se pueden poner letras en la grilla
                 }
                 if (!datosValidos)
                     break;
@@ -160,6 +168,43 @@ namespace pyrLunaBarLaMilanga
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void dgvVentas_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //hacer que no se pueda poner letras
+            /*if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }*/ //esto no anda nose pq
+        }
+        private void dgvVentas_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //hacer que no se pueda poner letras
+        }
+        private void dgvVentas_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            //detectar si el control es un TextBox
+            if (e.Control is TextBox textBox)
+            {
+                // Quitar posibles manejadores anteriores para evitar duplicados
+                textBox.KeyPress -= TextBox_KeyPress_Numeros;
+                // Agregar el nuevo manejador de eventos
+                textBox.KeyPress += TextBox_KeyPress_Numeros;
+            }
+        }
+        private void TextBox_KeyPress_Numeros(object sender, KeyPressEventArgs e)
+        {
+            //hacer que no se pueda poner letras
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true;
+            }
+            //solo permitir una coma
+            TextBox textBox = sender as TextBox;
+            if (e.KeyChar == ',' && textBox.Text.Contains(","))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

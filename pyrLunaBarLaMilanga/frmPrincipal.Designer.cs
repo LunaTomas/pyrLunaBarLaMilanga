@@ -96,6 +96,9 @@
             dgvVentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvVentas.Size = new Size(544, 203);
             dgvVentas.TabIndex = 0;
+            dgvVentas.CellValueChanged += dgvVentas_CellValueChanged;
+            dgvVentas.EditingControlShowing += dgvVentas_EditingControlShowing;
+            dgvVentas.KeyPress += dgvVentas_KeyPress;
             // 
             // clmComida
             // 
